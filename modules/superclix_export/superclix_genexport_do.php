@@ -42,11 +42,16 @@ class SuperClix_GenExport_Do extends SuperClix_GenExport_Do_parent
             $smarty = oxUtilsView::getInstance()->getSmarty();
             $smarty->assign_by_ref( "linenr", $iCnt );
             $smarty->assign_by_ref( "article", $oArticle );
-            $smarty->assign( "spr", $myConfig->getConfigParam( 'sCSVSign' ) );
-            $smarty->assign( "encl", $myConfig->getConfigParam( 'sGiCsvFieldEncloser' ) );
+		#TODO: find out why its not working from config
+            #$smarty->assign( "spr", $myConfig->getConfigParam( 'sCSVSign' ) );
+            #$smarty->assign( "encl", $myConfig->getConfigParam( 'sGiCsvFieldEncloser' ) );
+            $smarty->assign( "spr", ";" );
+            $smarty->assign( "encl", '"' );
             $smarty->assign( "sManufacturer", $this->_getManufactorTitle( $oArticle->oxarticles__oxmanufacturerid->value ) );
             $smarty->assign( "sPictureUrl", $this->_checkPictureUrl( $oArticle ) );
             $smarty->assign( "sCategory", $oArticle->getCategory()->oxcategories__oxtitle->value );
+            $smarty->assign( "sPriceBrut", $oArticle->getPrice(1)->getBruttoPrice() );
+            $smarty->assign( "sPriceNet", $oArticle->getPrice(1)->getNettoPrice() );
             $this->write( $smarty->fetch( "superclix_genexport.tpl", $this->getViewID() ) );
             return ++$iExportedItems;
         }
